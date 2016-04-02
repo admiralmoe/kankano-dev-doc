@@ -1,8 +1,8 @@
 # 服务器端的API
 
-## 客户端与服务器端的通讯
+## 提督信息通讯
 
-### POST `/api_v1/get/last_update`
+### POST `/api_v1/admiral/last_update`
 用于查询服务器端有无新的数据更新。已经考虑到多帐号的情况。
 
 #### 请求
@@ -30,7 +30,7 @@
 
 `last_update`：epoch/unix 时间，精确到毫秒。[访问此处](http://currentmillis.com/)了解更多信息。
 
-### POST `/api_v1/get/port`
+### POST `/api_v1/admiral/port`
 用于获取港口信息，包括舰队，远征，建造，入渠。
 #### 请求
 ``` json
@@ -95,3 +95,68 @@
 `constructions`：提督的建造信息。建造位编号从 0 开始，`enable` 为启用标志，启用为1，未启用为 -1。`ship` 为出货舰娘在全局船列表中的编号。`complete_time` 为完成时间，格式为 epoch/unix，精确到毫秒。
 
 `repairs`：提督的入渠信息。澡堂编号从 0 开始。`enable` 为启用标志，启用为1，未启用为 -1。`ship` 为洗澡舰娘在全局船列表中的编号。提督舰娘列表实装后，切换为提督舰娘列表编号。`complete_time` 为完成时间，格式为 epoch/unix，精确到毫秒。
+
+## 共通信息通讯
+
+### GET `/api_v1/info/last_update`
+用于查询游戏共通信息有无更新。
+#### 请求
+无须任何内容
+
+#### 响应
+``` json
+{
+  "last_update": 1458743944006
+}
+```
+
+### GET `/api_v1/info/missions`
+获取当前可用的远征信息。
+#### 请求
+无须任何内容
+#### 响应
+``` json
+{
+  "0":
+  {
+    "name": "練習航海",
+    "description": "鎮守府近海を航海し、艦隊の練度を高めよう！",
+    "time": 15,
+    "use_bullet": 0,
+    "use_fuel": 0.3,
+    "map": 1,
+    "win_goods":
+    {
+      "0":
+      {
+        "goods": 0,
+        "count": 0
+      },
+      "1":{}
+    }
+  },
+  "1":
+  {
+
+  }
+}
+
+```
+远征项目的编号从 0 开始。`name` 为远征名称，`description` 为远征描述，`time` 为远征所花费时间，单位为分钟。`use_bullet` 与 `use_fuel` 分别为远征所消耗的弹药与燃料占比。`map` 为所在海域，`win_goods` 为远征奖励道具。
+
+关于远征资源收益方面的信息，官方 api 中并未提供，暂未实装。
+
+### GET `/api_v1/info/ships`
+获取舰娘信息
+#### 请求
+无须任何内容
+#### 响应
+```json
+{
+  "0":
+  {
+    "name": "睦月"
+  }
+}
+```
+编号从 0 开始，`name` 为舰娘名称。无印舰与改造后舰的 id 是不一致的。
